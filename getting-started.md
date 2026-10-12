@@ -1,3 +1,4 @@
+
 # Getting Started with REST APIs
 
 REST APIs are widely used to allow different software applications and services to communicate with each other.
@@ -29,10 +30,10 @@ The application could request this information from a weather service through an
 
 The basic communication looks like this:
 
-~~~text
+```text
 Weather App → API Request → Weather Server
 Weather App ← API Response ← Weather Server
-~~~
+```
 
 The application does not need to know how the weather service stores or calculates its data. It only needs to know how to communicate with the API.
 
@@ -52,37 +53,37 @@ The API sends the response back to the client.
 
 The process can be summarized as:
 
-~~~text
+```text
 Client
    |
    | Request
    ↓
-API
+  API
    |
    | Process request
    ↓
-Server
+ Server
    |
    | Response
    ↓
-Client
-~~~
+ Client
+```
 
 For example, a web application may request information about a customer.
 
-~~~http
+```http
 GET /customers/123
-~~~
+```
 
 The server processes the request and may return:
 
-~~~json
+```json
 {
   "id": 123,
   "name": "John Smith",
   "email": "john@example.com"
 }
-~~~
+```
 
 The web application can then use this information to display the customer's details.
 
@@ -98,21 +99,21 @@ REST APIs are popular because they provide a simple and standardized way for app
 
 For example:
 
-~~~http
+```http
 GET /users/123
-~~~
+```
 
 This request asks the API to retrieve information about user `123`.
 
 A successful response might be:
 
-~~~json
+```json
 {
   "id": 123,
   "name": "John Smith",
   "email": "john@example.com"
 }
-~~~
+```
 
 The client can then process the returned information.
 
@@ -174,17 +175,17 @@ The HTTP method tells the API what type of operation the client wants to perform
 
 Common methods include:
 
-- GET
-- POST
-- PUT
-- PATCH
-- DELETE
+- `GET`
+- `POST`
+- `PUT`
+- `PATCH`
+- `DELETE`
 
 For example:
 
-~~~http
+```http
 GET /users/123
-~~~
+```
 
 The `GET` method indicates that the client wants to retrieve information.
 
@@ -196,12 +197,12 @@ An endpoint is a specific URL through which an API provides access to a resource
 
 For example:
 
-~~~text
+```text
 /users
 /users/123
 /products
 /orders
-~~~
+```
 
 The endpoint `/users/123` could represent one specific user.
 
@@ -211,10 +212,10 @@ Headers provide additional information about a request.
 
 For example:
 
-~~~http
+```http
 Content-Type: application/json
 Accept: application/json
-~~~
+```
 
 Headers can communicate information about the request format, authentication, accepted response formats, and other requirements.
 
@@ -224,12 +225,12 @@ Some API requests include a request body.
 
 For example, when creating a new user, the client might send:
 
-~~~json
+```json
 {
   "name": "John Smith",
   "email": "john@example.com"
 }
-~~~
+```
 
 The server can use this information to create the new user.
 
@@ -245,19 +246,19 @@ A response commonly contains:
 
 For example:
 
-~~~http
+```http
 HTTP/1.1 200 OK
-~~~
+```
 
 The response body could contain:
 
-~~~json
+```json
 {
   "id": 123,
   "name": "John Smith",
   "email": "john@example.com"
 }
-~~~
+```
 
 The status code tells the client what happened, while the response body usually contains the requested data or information about the result.
 
@@ -279,17 +280,17 @@ Common resources include:
 
 For example:
 
-~~~text
+```text
 /users
-~~~
+```
 
 could represent a collection of users.
 
 A specific user could be represented by:
 
-~~~text
+```text
 /users/123
-~~~
+```
 
 The number `123` identifies a particular user.
 
@@ -299,27 +300,27 @@ It is useful to understand the difference between a collection and an individual
 
 A collection represents multiple resources:
 
-~~~text
+```text
 /users
-~~~
+```
 
 An individual resource represents one specific item:
 
-~~~text
+```text
 /users/123
-~~~
+```
 
 For example:
 
-~~~http
+```http
 GET /users
-~~~
+```
 
 might return several users.
 
-~~~http
+```http
 GET /users/123
-~~~
+```
 
 might return only the user with ID `123`.
 
@@ -331,9 +332,9 @@ Suppose an application needs information about a user.
 
 The client sends:
 
-~~~http
+```http
 GET /users/123
-~~~
+```
 
 ### Step 2: API receives the request
 
@@ -353,19 +354,19 @@ If the user exists, the server prepares the requested information.
 
 The API may return:
 
-~~~http
+```http
 200 OK
-~~~
+```
 
 along with:
 
-~~~json
+```json
 {
   "id": 123,
   "name": "John Smith",
   "email": "john@example.com"
 }
-~~~
+```
 
 The client can then use the response.
 
@@ -375,21 +376,21 @@ Not every API request is successful.
 
 For example, if the requested user does not exist, the API might return:
 
-~~~http
+```http
 404 Not Found
-~~~
+```
 
 If the client sends invalid information, the API might return:
 
-~~~http
+```http
 400 Bad Request
-~~~
+```
 
 If authentication is required but the client has not provided valid credentials, the API might return:
 
-~~~http
+```http
 401 Unauthorized
-~~~
+```
 
 Common HTTP status codes include:
 
@@ -403,7 +404,7 @@ Common HTTP status codes include:
 | `404 Not Found` | Requested resource does not exist |
 | `500 Internal Server Error` | Server encountered an unexpected problem |
 
-A complete explanation of status codes will be provided in the [Status Codes](status-codes.md) section.
+A complete explanation of status codes is available in the [Status Codes](status-codes.md) guide.
 
 ## API Data and JSON
 
@@ -411,13 +412,13 @@ REST APIs commonly use **JSON**, or JavaScript Object Notation, to represent str
 
 For example:
 
-~~~json
+```json
 {
   "id": 123,
   "name": "John Smith",
   "email": "john@example.com"
 }
-~~~
+```
 
 JSON uses key-value pairs to represent information.
 
@@ -461,3 +462,17 @@ Understanding these fundamentals makes it easier to work with API documentation,
 ## What's Next?
 
 Now that you understand the basic structure of a REST API, continue with **[HTTP Methods](http-methods.md)** to learn how `GET`, `POST`, `PUT`, `PATCH`, and `DELETE` are used to interact with API resources.
+
+---
+
+## Related Guides
+
+Continue learning about REST APIs with these guides:
+
+- [HTTP Methods](http-methods.md) — Learn how GET, POST, PUT, PATCH, and DELETE work.
+- [Requests and Responses](requests-and-responses.md) — Understand HTTP request and response structure.
+- [HTTP Status Codes](status-codes.md) — Learn how to interpret API responses.
+- [API Authentication](authentication.md) — Understand how APIs verify client identity.
+- [Troubleshooting REST APIs](troubleshooting.md) — Learn how to investigate common API errors.
+
+[Back to the README](README.md)
