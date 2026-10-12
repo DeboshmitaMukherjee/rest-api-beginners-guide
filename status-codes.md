@@ -286,8 +286,10 @@ Learning to interpret these codes makes it easier to test APIs, diagnose failure
 
 ## Related Guides
 
-- [Getting Started with REST APIs](getting-started.md)
-- [HTTP Methods in REST APIs](http-methods.md)
-- [Requests and Responses in REST APIs](requests-and-responses.md)
-- [API Authentication](authentication.md)
-- [Troubleshooting REST APIs](troubleshooting.md)
+- [Getting Started with REST APIs](getting-started.md) — Learn the basics of REST APIs.
+- [HTTP Methods](http-methods.md) — Learn how HTTP methods work.
+- [Requests and Responses](requests-and-responses.md) — Understand API requests and responses.
+- [API Authentication](authentication.md) — Understand how APIs verify client identity.
+- [Troubleshooting REST APIs](troubleshooting.md) — Learn how to investigate common API errors.
+
+[Back to the README](README.md)
