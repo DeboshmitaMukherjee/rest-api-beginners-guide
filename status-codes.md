@@ -1,534 +1,293 @@
 
-# HTTP Status Codes in REST APIs
+# Understanding HTTP Status Codes
 
-HTTP status codes tell a client what happened when a server received and processed an API request.
+## Introduction
 
-When working with REST APIs, checking the status code is one of the easiest ways to understand whether a request succeeded or encountered a problem.
+When a client sends a request to a REST API, the server returns an HTTP response. One important part of that response is the **HTTP status code**, which indicates the general result of the request.
 
-For example, a response containing `200 OK` usually means the request was successful, while `404 Not Found` means the requested resource could not be found.
+For example, a status code can indicate that a request succeeded, the requested resource could not be found, or the server encountered an error.
 
-This guide explains the main categories of HTTP status codes, commonly used codes, practical examples, and ways to troubleshoot errors.
+Understanding status codes helps developers interpret API responses, identify problems, and troubleshoot requests more effectively.
 
-## What Are HTTP Status Codes?
+## 1. What Are HTTP Status Codes?
 
-An HTTP status code is a three-digit number returned by a server in response to an HTTP request.
+HTTP status codes are three-digit numbers included in HTTP responses.
 
-The code provides information about the result of the request. Depending on the result, the server may also return response headers and a response body containing data or an error message.
+For example:
 
-For example, a request to retrieve a user might look like this:
-
-~~~http
-GET /users/123
-~~~
-
-A successful response could be:
-
-~~~http
+```http
 HTTP/1.1 200 OK
 Content-Type: application/json
-~~~
+```
 
-Response body:
+In this response:
 
-~~~json
-{
-  "id": 123,
-  "name": "John Smith",
-  "email": "john@example.com"
-}
-~~~
+- `200` is the status code.
+- `OK` is the reason phrase.
+- `Content-Type` indicates the format of the response body.
 
-The status code `200` indicates that the request succeeded. The response body contains the requested user's information.
+Status codes are grouped into five categories based on the type of response.
 
-## Categories of HTTP Status Codes
+## 2. The Five Categories of Status Codes
 
-HTTP status codes are divided into five categories. The first digit indicates the general type of result.
-
-| Code Range | Category | Meaning |
+| Code range | Category | Meaning |
 |---|---|---|
-| `100–199` | Informational | The request has been received and the process is continuing |
-| `200–299` | Success | The request was successfully received, understood, and processed |
-| `300–399` | Redirection | Further action is needed, often to access a different URL |
-| `400–499` | Client Error | The request contains a problem or cannot be fulfilled as sent |
-| `500–599` | Server Error | The server failed to complete an apparently valid request |
+| 1xx | Informational | The request is still in progress or additional protocol information is being provided |
+| 2xx | Success | The request was successfully received, understood, and handled |
+| 3xx | Redirection | Further action is needed to complete the request |
+| 4xx | Client error | The request has a problem or cannot be fulfilled as sent |
+| 5xx | Server error | The server failed to fulfill an apparently valid request |
 
-Most beginners working with REST APIs will frequently encounter success codes in the `200` range and error codes in the `400` and `500` ranges.
+The exact meaning of a response depends on the status code and the API's behavior.
 
-## 2xx: Success Status Codes
+## 3. Success Status Codes (2xx)
 
-A `2xx` status code indicates that the request was successfully processed. The exact meaning depends on the specific code.
+Success codes indicate that the server successfully handled the request.
 
 ### 200 OK
 
-The `200 OK` status code indicates that the request succeeded.
+The request succeeded.
 
-It is commonly returned when retrieving information from an API.
+Example: A client requests a user's details.
 
-Example request:
+```http
+GET /users/123
+```
 
-~~~http
-GET /products/45
-~~~
+Response:
 
-Example response:
-
-~~~http
+```http
 HTTP/1.1 200 OK
 Content-Type: application/json
-~~~
+```
 
-~~~json
+```json
 {
-  "id": 45,
-  "name": "Wireless Keyboard",
-  "price": 39.99
+  "id": 123,
+  "name": "Alex Morgan"
 }
-~~~
-
-**When you see it:** The API successfully processed the request. Check the response body to access the returned information.
+```
 
 ### 201 Created
 
-The `201 Created` status code indicates that the request successfully created a new resource.
+The request succeeded and created a new resource.
 
-It is commonly returned after a successful `POST` request.
+Example: A client creates a user with a POST request.
 
-Example request:
-
-~~~http
+```http
 POST /users
 Content-Type: application/json
-~~~
+```
 
-Request body:
-
-~~~json
+```json
 {
-  "name": "Sarah Lee",
-  "email": "sarah@example.com"
+  "name": "Alex Morgan",
+  "email": "alex@example.com"
 }
-~~~
+```
 
-Example response:
+The server may return `201 Created` along with the new resource's details.
 
-~~~http
-HTTP/1.1 201 Created
-Content-Type: application/json
-Location: /users/125
-~~~
+### 202 Accepted
 
-~~~json
-{
-  "id": 125,
-  "name": "Sarah Lee",
-  "email": "sarah@example.com"
-}
-~~~
+The server accepted the request for processing, but processing may not be complete yet.
 
-**When you see it:** The server has created a resource. The response may include the new resource's details or a `Location` header identifying it.
+This status is useful for operations that run in the background.
 
 ### 204 No Content
 
-The `204 No Content` status code indicates that the request succeeded, but the server has no response body to return.
+The request succeeded, but the response does not contain a body.
 
-It is commonly used after a successful deletion or update.
+Example: An API successfully processes a DELETE request and returns `204 No Content`.
 
-Example request:
+## 4. Client Error Status Codes (4xx)
 
-~~~http
-DELETE /users/125
-~~~
-
-Example response:
-
-~~~http
-HTTP/1.1 204 No Content
-~~~
-
-**When you see it:** The operation succeeded. Do not expect a response body containing JSON.
-
-## 3xx: Redirection Status Codes
-
-A `3xx` status code indicates that additional action may be needed to complete the request, often because the requested resource is available at a different URL.
-
-### 301 Moved Permanently
-
-The `301 Moved Permanently` status code indicates that a resource has permanently moved to another URL.
-
-A response may include a `Location` header containing the new URL.
-
-~~~http
-HTTP/1.1 301 Moved Permanently
-Location: https://api.example.com/v2/users
-~~~
-
-**When you see it:** Check the new URL and update your request if necessary.
-
-### 304 Not Modified
-
-The `304 Not Modified` status code is used with conditional requests to indicate that a resource has not changed since the version the client has.
-
-The client can reuse its cached copy instead of downloading the resource again.
-
-**When you see it:** The response usually means the cached version can still be used. A `304` response does not normally include a response body.
-
-## 4xx: Client Error Status Codes
-
-A `4xx` status code indicates that something is wrong with the request or that the client cannot access the requested resource as sent.
-
-These codes are particularly useful when troubleshooting API requests.
+Client error codes indicate that the request could not be fulfilled as sent. The response body may provide more information about the problem.
 
 ### 400 Bad Request
 
-The `400 Bad Request` status code indicates that the server cannot process the request because it considers the request invalid.
+The server cannot process the request because it considers the request invalid.
 
-Possible causes include:
+**Possible causes:**
+- Missing required fields.
+- Invalid JSON syntax.
+- Incorrect query parameters.
 
-- Missing required fields
-- Invalid JSON syntax
-- Incorrect parameter values
-- Malformed request data
-
-Example request:
-
-~~~http
-POST /users
-Content-Type: application/json
-~~~
-
-Request body with invalid JSON:
-
-~~~json
-{
-  "name": "Sarah Lee"
-  "email": "sarah@example.com"
-}
-~~~
-
-The comma between the two fields is missing.
-
-**How to troubleshoot it:**
-
-1. Check the request body for syntax errors.
-2. Verify that all required fields are included.
-3. Check the API documentation for accepted values and formats.
-4. Read the error message returned by the server.
+**What to check:** Review the request body, parameters, and error message.
 
 ### 401 Unauthorized
 
-The `401 Unauthorized` status code indicates that valid authentication credentials are missing or were not accepted.
+The request lacks valid authentication credentials.
 
-For example, an API may require an access token.
+**Possible causes:**
+- An API key is missing.
+- An access token is invalid.
+- A token has expired.
 
-~~~http
-GET /account
-Authorization: Bearer your_access_token
-~~~
-
-If the token is missing, invalid, or expired, the server may return `401 Unauthorized`.
-
-**How to troubleshoot it:**
-
-1. Check whether the endpoint requires authentication.
-2. Verify that the token is included in the request.
-3. Check whether the token has expired.
-4. Follow the API provider's instructions for obtaining or refreshing credentials.
+**What to check:** Verify the credentials and follow the API's authentication instructions.
 
 ### 403 Forbidden
 
-The `403 Forbidden` status code indicates that the server understood the request but refuses to authorize it.
+The server understood the request but refuses to authorize it.
 
-The client may be authenticated but lack permission to perform the requested action.
+**Possible causes:**
+- The account lacks the required permissions.
+- The user does not have access to the requested resource.
 
-For example, a regular user may not have permission to access an administrator-only endpoint.
+**What to check:** Confirm that the authenticated account has permission to perform the operation.
 
-**How to troubleshoot it:**
-
-1. Confirm that the correct account or token is being used.
-2. Check the permissions or roles assigned to that account.
-3. Review the API documentation for access requirements.
-4. Contact the API administrator if the required permission is missing.
-
-**Remember:** `401` generally relates to authentication, while `403` generally means the request is understood but access is not permitted.
+**Remember:** A `401` generally relates to authentication, while a `403` generally relates to permission. Some APIs may handle these cases differently.
 
 ### 404 Not Found
 
-The `404 Not Found` status code indicates that the server cannot find the requested resource.
+The requested resource or endpoint could not be found.
 
-Example request:
+**Possible causes:**
+- The URL is incorrect.
+- The resource ID does not exist.
+- The resource has been removed.
 
-~~~http
-GET /users/9999
-~~~
-
-Example response:
-
-~~~http
-HTTP/1.1 404 Not Found
-Content-Type: application/json
-~~~
-
-~~~json
-{
-  "error": "User not found"
-}
-~~~
-
-Possible causes include:
-
-- The resource does not exist.
-- The resource ID is incorrect.
-- The endpoint URL contains a spelling mistake.
-- The resource is no longer available.
-
-**How to troubleshoot it:**
-
-1. Check the endpoint and resource ID.
-2. Confirm that the resource exists.
-3. Verify the URL against the API documentation.
-4. Check whether the resource is accessible to your account.
+**What to check:** Verify the endpoint path, resource ID, and API documentation.
 
 ### 405 Method Not Allowed
 
-The `405 Method Not Allowed` status code indicates that the HTTP method is not supported for the requested resource.
+The endpoint does not support the HTTP method used in the request.
 
-For example, an API might allow retrieving users through `GET` but not allow deleting them through the same endpoint.
+**Example:** Sending `DELETE` to an endpoint that only supports `GET`.
 
-~~~http
-DELETE /reports
-~~~
-
-If deletion is not supported for that endpoint, the server may return `405 Method Not Allowed`.
-
-**How to troubleshoot it:**
-
-1. Check which HTTP methods the endpoint supports.
-2. Verify that the method matches the operation you want to perform.
-3. Review the endpoint documentation.
-4. Check the `Allow` response header if the server provides it.
+**What to check:** Confirm which methods the endpoint supports.
 
 ### 409 Conflict
 
-The `409 Conflict` status code indicates that the request conflicts with the current state of the resource.
+The request conflicts with the current state of the resource.
 
-For example, an API may reject a request to create a username that already exists.
+For example, an API may reject an attempt to create a username that already exists.
 
-~~~http
-POST /users
+**What to check:** Review the response details and resolve the conflict before retrying.
+
+### 415 Unsupported Media Type
+
+The server does not support the format of the request body.
+
+**Possible cause:** The client sends JSON but uses an incorrect `Content-Type` header.
+
+**What to check:** Confirm the expected content type. For JSON requests, APIs commonly use:
+
+```http
 Content-Type: application/json
-~~~
-
-~~~json
-{
-  "username": "sarahlee"
-}
-~~~
-
-The API might return `409 Conflict` if that username is already in use.
-
-**How to troubleshoot it:**
-
-1. Read the response body for details about the conflict.
-2. Check whether the resource or value already exists.
-3. Update the request to resolve the conflict.
-4. Retry the request only after addressing the cause.
+```
 
 ### 422 Unprocessable Content
 
-The `422 Unprocessable Content` status code indicates that the server understands the request format but cannot process the submitted instructions or data.
+The server understands the request format but cannot process the submitted instructions or data.
 
-For example, an API may reject a registration request because an email address does not meet its validation rules.
+For example, the request may contain an email address that fails the API's validation rules.
 
-~~~json
-{
-  "email": "not-an-email"
-}
-~~~
-
-**How to troubleshoot it:**
-
-1. Read the validation errors in the response.
-2. Check the required format for each field.
-3. Correct the invalid values.
-4. Submit the request again.
-
-APIs differ in how they use `400` and `422`. Check the API documentation to understand which code it returns for validation errors.
+**What to check:** Review the response body for field-level validation errors.
 
 ### 429 Too Many Requests
 
-The `429 Too Many Requests` status code indicates that the client has sent too many requests within a specified period.
+The client has sent too many requests within a given period.
 
-APIs may limit requests to protect their services and maintain performance.
+**What to check:**
+- Review the API's rate limits.
+- Look for a `Retry-After` header.
+- Wait before retrying.
+- Use an appropriate retry strategy.
 
-**How to troubleshoot it:**
+## 5. Server Error Status Codes (5xx)
 
-1. Check whether the API has a rate limit.
-2. Look for a `Retry-After` header that indicates when to retry.
-3. Reduce the frequency of requests.
-4. Use a delay between retries rather than repeatedly sending requests immediately.
-
-## 5xx: Server Error Status Codes
-
-A `5xx` status code indicates that the server failed to complete a request.
-
-The request may be valid, but a server-side problem prevents successful processing.
+Server error codes indicate that the server failed to complete a request.
 
 ### 500 Internal Server Error
 
-The `500 Internal Server Error` status code indicates that the server encountered an unexpected problem.
+The server encountered an unexpected condition.
 
-Possible causes include:
-
-- An unhandled application error
-- A database problem
-- An unexpected condition in the server code
-
-**How to troubleshoot it:**
-
-1. Check the response body for any useful error details.
-2. Check the API provider's service-status page if one is available.
-3. Retry later if the problem appears temporary.
-4. Contact the API provider if the error continues.
-
-Avoid repeatedly sending the same request without checking whether the operation may already have been completed.
+**What to check:** Review the response body, request details, and server logs if you have access to them.
 
 ### 502 Bad Gateway
 
-The `502 Bad Gateway` status code indicates that a server acting as a gateway or proxy received an invalid response from an upstream server.
+A server acting as a gateway or proxy received an invalid response from an upstream server.
 
-This can happen when one service depends on another service that is unavailable or responding incorrectly.
-
-**How to troubleshoot it:**
-
-- Check the API provider's status page.
-- Retry after a short delay if appropriate.
-- Contact the provider if the problem persists.
+**What to check:** The problem may involve an upstream service or gateway configuration.
 
 ### 503 Service Unavailable
 
-The `503 Service Unavailable` status code indicates that the server is temporarily unable to handle the request.
+The server is temporarily unable to handle the request.
 
-Possible causes include maintenance, temporary overload, or service downtime.
+Possible reasons include maintenance or temporary overload.
 
-**How to troubleshoot it:**
-
-1. Check for maintenance notices or service outages.
-2. Look for a `Retry-After` header.
-3. Wait before trying again.
-4. Avoid sending repeated requests in rapid succession.
+**What to check:** Look for service-status information and any `Retry-After` header. Retry only when appropriate.
 
 ### 504 Gateway Timeout
 
-The `504 Gateway Timeout` status code indicates that a gateway or proxy did not receive a timely response from an upstream server.
+A gateway or proxy did not receive a timely response from an upstream server.
 
-The request may be taking too long because of server load or a problem with a dependent service.
+**What to check:** The upstream service may be slow or unavailable. Check the service status and retry according to the API's guidance.
 
-**How to troubleshoot it:**
+## 6. How to Troubleshoot an API Response
 
-- Wait briefly before retrying.
-- Check whether the API provider reports an outage.
-- Review any request timeout settings you control.
-- Contact the provider if the problem continues.
+When an API request fails, follow these steps:
 
-## Common HTTP Status Codes at a Glance
+1. **Read the status code.** Identify whether the response indicates success, a client error, or a server error.
+2. **Inspect the response body.** The API may provide an error message or additional details.
+3. **Check the request URL.** Verify the endpoint and resource ID.
+4. **Review the HTTP method.** Make sure the endpoint supports the method you used.
+5. **Verify authentication.** Check whether the request requires a valid API key or access token.
+6. **Validate the request data.** Confirm that required fields, data types, and headers are correct.
+7. **Check rate limits and service status.** Look for retry instructions or service outages.
+8. **Retry carefully.** Do not repeatedly resend a request that may create duplicate records or perform an operation more than once.
 
-Use this table as a quick reference when reading API responses.
+## 7. Example: Troubleshooting a Failed Request
 
-| Status Code | Name | Typical Meaning |
-|---|---|---|
-| `200` | OK | Request succeeded |
-| `201` | Created | Resource was created |
-| `204` | No Content | Request succeeded without a response body |
-| `301` | Moved Permanently | Resource has moved to a new URL |
-| `304` | Not Modified | Cached resource can be reused |
-| `400` | Bad Request | Request is invalid |
-| `401` | Unauthorized | Authentication is missing or invalid |
-| `403` | Forbidden | Access is not permitted |
-| `404` | Not Found | Resource could not be found |
-| `405` | Method Not Allowed | HTTP method is unsupported for the resource |
-| `409` | Conflict | Request conflicts with the resource's current state |
-| `422` | Unprocessable Content | Request data cannot be processed |
-| `429` | Too Many Requests | Rate limit has been exceeded |
-| `500` | Internal Server Error | Unexpected server error |
-| `502` | Bad Gateway | Invalid response from an upstream server |
-| `503` | Service Unavailable | Server is temporarily unavailable |
-| `504` | Gateway Timeout | Upstream server did not respond in time |
+Suppose you send this request:
 
-These are common uses, but the exact response codes and error details depend on the API.
+```http
+GET /users/999
+Authorization: Bearer YOUR_ACCESS_TOKEN
+```
 
-## How to Troubleshoot an API Status Code
+The API responds:
 
-When an API request fails, follow a consistent process instead of guessing at the cause.
+```http
+HTTP/1.1 404 Not Found
+Content-Type: application/json
+```
 
-### Step 1: Read the Status Code
-
-Start by identifying the returned code.
-
-For example, `401` suggests an authentication problem, while `404` suggests that the requested resource could not be found.
-
-### Step 2: Read the Response Body
-
-Some APIs return an error message that explains the problem.
-
-Example:
-
-~~~json
+```json
 {
-  "error": "Missing required field: email"
+  "error": "User not found"
 }
-~~~
+```
 
-This message indicates that the request needs an `email` field.
+Here is how to investigate:
 
-Not every API provides detailed error messages, so you may need to check its documentation.
+- Confirm that the endpoint is spelled correctly.
+- Check whether user `999` exists.
+- Verify that you are using the correct environment, such as testing or production.
+- Read the API documentation to understand how missing resources are handled.
 
-### Step 3: Check the Request
+The `404` response does not necessarily mean the entire API is unavailable. It indicates that the requested resource or endpoint was not found.
 
-Review the HTTP method, endpoint, headers, query parameters, and request body.
+## 8. Best Practices
 
-Make sure the request follows the API's requirements.
-
-### Step 4: Check Authentication and Permissions
-
-If you receive `401` or `403`, verify your credentials and access permissions.
-
-Do not share access tokens or other sensitive credentials when requesting help.
-
-### Step 5: Retry Carefully
-
-Temporary server errors may resolve themselves, but not every request should be retried immediately.
-
-For example, if a request creates a payment or another important resource, confirm whether the original operation succeeded before sending it again. Follow the API's retry and idempotency guidance.
-
-For rate limits, respect any `Retry-After` header.
-
-## Common Mistakes to Avoid
-
-When working with HTTP status codes, keep the following points in mind:
-
-- **Do not assume every `2xx` response contains JSON.** A `204 No Content` response has no response body.
-- **Do not treat `401` and `403` as identical.** Authentication and permission problems require different checks.
-- **Do not assume every error is caused by the client.** A `5xx` response indicates a server-side failure.
-- **Do not rely only on the status code.** Read the response body and headers when available.
-- **Do not retry every failed request immediately.** Some operations may create duplicate records or repeat an action.
-- **Do not assume every API uses the same error format.** Always consult the relevant API documentation.
+- **Read the full response.** Do not rely on the status code alone when the API provides additional error details.
+- **Handle errors in your application.** Display useful messages instead of exposing raw technical errors to end users.
+- **Avoid unnecessary retries.** Repeated requests can create duplicate operations or worsen rate-limit problems.
+- **Follow retry guidance.** Respect `Retry-After` headers and the API's documented limits.
+- **Protect sensitive information.** Avoid including access tokens, passwords, or personal data in logs.
+- **Consult the API documentation.** An API may define specific error responses for its endpoints.
 
 ## Summary
 
-HTTP status codes help clients understand the result of an API request.
+HTTP status codes help clients understand how a server handled a request. The `2xx` category indicates success, `3xx` indicates redirection, `4xx` indicates a client error, and `5xx` indicates a server error.
 
-The five categories are:
+Learning to interpret these codes makes it easier to test APIs, diagnose failures, and build applications that handle responses correctly.
 
-- `1xx`: Informational responses
-- `2xx`: Successful requests
-- `3xx`: Redirection
-- `4xx`: Client errors
-- `5xx`: Server errors
+## Related Guides
 
-When troubleshooting an API, check the status code, inspect the response body, verify the request, and consult the API documentation.
-
-Understanding status codes makes it easier to identify problems, interpret responses, and work more effectively with REST APIs.
-
-## What's Next?
-
-Continue with **[Authentication](authentication.md)** to learn how APIs verify a client's identity, use access tokens, and control access to protected resources.
+- [Getting Started with REST APIs](getting-started.md)
+- [HTTP Methods in REST APIs](http-methods.md)
+- [Requests and Responses in REST APIs](requests-and-responses.md)
+- [API Authentication](authentication.md)
+- [Troubleshooting REST APIs](troubleshooting.md)
