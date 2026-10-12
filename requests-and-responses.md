@@ -675,3 +675,13 @@ Understanding these components helps you read API documentation, build correct r
 ## What's Next?
 
 Now that you understand how API requests and responses work, continue with **[Status Codes](status-codes.md)** to learn what common HTTP response codes mean and how they help identify successful and failed API operations.
+
+## Related Guides
+
+- [Getting Started with REST APIs](getting-started.md) — Learn the basics of REST APIs.
+- [HTTP Methods](http-methods.md) — Understand GET, POST, PUT, PATCH, and DELETE.
+- [HTTP Status Codes](status-codes.md) — Learn how to interpret API responses.
+- [API Authentication](authentication.md) — Understand how APIs verify client identity.
+- [Troubleshooting REST APIs](troubleshooting.md) — Learn how to investigate common API errors.
+
+[Back to the README](README.md)
