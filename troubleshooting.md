@@ -384,12 +384,14 @@ A systematic troubleshooting process helps you identify likely causes and resolv
 
 Return to the [REST API Beginner's Guide](README.md) to review the documentation topics and revisit any concepts you want to practice.
 
+---
+
 ## Related Guides
 
-- [Getting Started with REST APIs](getting-started.md) — Learn the basics of REST APIs.
-- [HTTP Methods](http-methods.md) — Understand how HTTP methods work.
-- [Requests and Responses](requests-and-responses.md) — Learn about API requests and responses.
+- [Getting Started with REST APIs](getting-started.md) — Learn the fundamentals of REST APIs.
+- [HTTP Methods](http-methods.md) — Understand GET, POST, PUT, PATCH, and DELETE.
+- [Requests and Responses](requests-and-responses.md) — Learn how API requests and responses work.
 - [HTTP Status Codes](status-codes.md) — Understand common HTTP status codes.
-- [Troubleshooting REST APIs](troubleshooting.md) — Learn how to investigate common API errors.
+- [API Authentication](authentication.md) — Learn how APIs verify client identity.
 
 [Back to the README](README.md)
