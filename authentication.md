@@ -314,3 +314,16 @@ When working with authentication:
 ## What's Next?
 
 Continue with [Troubleshooting](troubleshooting.md) to learn how to identify common API problems, interpret error responses, and resolve request failures.
+
+
+---
+
+## Related Guides
+
+- [Getting Started with REST APIs](getting-started.md) — Learn the basics of REST APIs.
+- [HTTP Methods](http-methods.md) — Understand how HTTP methods work.
+- [Requests and Responses](requests-and-responses.md) — Learn about API requests and responses.
+- [HTTP Status Codes](status-codes.md) — Understand common HTTP status codes.
+- [Troubleshooting REST APIs](troubleshooting.md) — Learn how to investigate common API errors.
+
+[Back to the README](README.md)
