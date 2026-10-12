@@ -299,8 +299,10 @@ Choosing the correct method and following the API's documentation makes requests
 
 ## Related Guides
 
-- [Getting Started with REST APIs](getting-started.md)
-- [Requests and Responses in REST APIs](requests-and-responses.md)
-- [Understanding HTTP Status Codes](status-codes.md)
-- [API Authentication](authentication.md)
-- [Troubleshooting REST APIs](troubleshooting.md)
+- [Getting Started with REST APIs](getting-started.md) — Learn the basics of REST APIs.
+- [Requests and Responses](requests-and-responses.md) — Understand how API requests and responses work.
+- [HTTP Status Codes](status-codes.md) — Learn what API status codes mean.
+- [API Authentication](authentication.md) — Understand how APIs verify client identity.
+- [Troubleshooting REST APIs](troubleshooting.md) — Find and resolve common API errors.
+
+[Back to the README](README.md)
