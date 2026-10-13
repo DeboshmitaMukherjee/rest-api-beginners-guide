@@ -74,7 +74,7 @@ The client sends this request to submit new user information. The API validates 
 
 ### Request and Response Flow
 
-![REST API request and response flow and JSON data types](images/api-reference-infographic.png)
+![REST API request and response flow and JSON data types](api-reference-infographic.png)
 
 *Figure 1: REST API request and response flow, with an example of JSON structure and data types.*
 
