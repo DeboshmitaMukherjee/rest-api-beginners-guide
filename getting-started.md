@@ -1,4 +1,3 @@
-
 # Getting Started with REST APIs
 
 ## Introduction
